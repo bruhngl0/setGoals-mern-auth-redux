@@ -1,14 +1,16 @@
 const express = require ('express')
 const dotenv = require('dotenv').config()
 const app = express()
+const colors = require('colors')
 const goalRoutes = require("./routes/goalRoutes")
 const {errorHandler} = require("./middleware/errorMiddleware")
+const connectDB = require("./config/db")
 
 
 
 PORT = process.env.PORT || 2121
 
-
+connectDB()
 app.use(express.json()) //body parser in order to handle the req.body data we gotta add couple for middlewares. this one os for raw json
 app.use(express.urlencoded({extended: false})) //this one is for url 
 
