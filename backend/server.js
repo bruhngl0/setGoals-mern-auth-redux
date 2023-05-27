@@ -2,6 +2,8 @@ const express = require ('express')
 const dotenv = require('dotenv').config()
 const app = express()
 const goalRoutes = require("./routes/goalRoutes")
+const {errorHandler} = require("./middleware/errorMiddleware")
+
 
 
 PORT = process.env.PORT || 2121
@@ -12,6 +14,8 @@ app.use(express.urlencoded({extended: false})) //this one is for url
 
 
 app.use('/api/goals' ,  goalRoutes)
+
+app.use(errorHandler)
 
 
 app.listen(PORT, ()=> (console.log(`server running on ${PORT}`)))
