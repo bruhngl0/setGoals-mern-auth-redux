@@ -39,6 +39,7 @@ const registerUser = asyncHandler(async(req,res)=>{
         name,
         email,
         password: hashedPassword,
+        
     })
 
     //In JavaScript, when you have a variable with the same name as the property you 
@@ -47,13 +48,14 @@ const registerUser = asyncHandler(async(req,res)=>{
     //assign the value from the corresponding variable.
 
 
-    
+
     //checking if the user was created or not and returning some data
     if(user){
         res.status(201).json({
             name: user.name,
             email: user.email,
-            _id: user.id
+            _id: user.id,
+            token: generateToken(user.id)
         })
     }
     else{
@@ -69,7 +71,21 @@ const registerUser = asyncHandler(async(req,res)=>{
 //  route: POST /api/users/login
 // access: public
 const loginUser = asyncHandler(async(req,res)=>{
-    res.status(200).json({message : "login user"})
+   const {email, password} = req.body
+
+   const user = await User.findOne({email})
+   if(user && (await bcrypt.compare(password, user.password))){
+    res.status(200).json({
+        name: user.name,
+        email: user.email,
+        _id: user.id,
+        token: generateToken(user.id)
+    })
+   }
+   else{
+    res.status(400)
+    throw new Error("invalid credentials")
+   }
 })
 
 
@@ -79,6 +95,15 @@ const loginUser = asyncHandler(async(req,res)=>{
 const getMe = asyncHandler(async(req,res)=>{
     res.status(200).json({message : " get data"})
 })
+
+
+// generate JWT token
+
+const generateToken = (id)=>{
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: '30d',
+    } )
+}
 
 module.exports = {
     registerUser,
