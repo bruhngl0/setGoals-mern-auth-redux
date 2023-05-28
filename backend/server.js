@@ -3,6 +3,7 @@ const dotenv = require('dotenv').config()
 const app = express()
 const colors = require('colors')
 const goalRoutes = require("./routes/goalRoutes")
+const userRoutes = require("./routes/userRoutes")
 const {errorHandler} = require("./middleware/errorMiddleware")
 const connectDB = require("./config/db")
 
@@ -16,6 +17,7 @@ app.use(express.urlencoded({extended: false})) //this one is for url
 
 
 app.use('/api/goals' ,  goalRoutes)
+app.use('/api/users' , userRoutes)
 
 app.use(errorHandler)
 
