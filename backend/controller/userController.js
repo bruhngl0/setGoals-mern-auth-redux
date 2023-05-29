@@ -55,7 +55,7 @@ const registerUser = asyncHandler(async(req,res)=>{
             name: user.name,
             email: user.email,
             _id: user.id,
-            token: generateToken(user.id)
+            token: generateToken(user._id)
         })
     }
     else{
@@ -79,7 +79,7 @@ const loginUser = asyncHandler(async(req,res)=>{
         name: user.name,
         email: user.email,
         _id: user.id,
-        token: generateToken(user.id)
+        token: generateToken(user._id)
     })
    }
    else{
@@ -91,9 +91,15 @@ const loginUser = asyncHandler(async(req,res)=>{
 
 //  desc : get user data
 //  route: GET /api/users/
-// access: public
+// access: private
 const getMe = asyncHandler(async(req,res)=>{
-    res.status(200).json({message : " get data"})
+
+    const {email, name, _id} = await User.findById(req.user.id)
+    res.status(200).json({
+        id: _id,
+        name,
+        email,
+    })
 })
 
 
