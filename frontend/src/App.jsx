@@ -2,7 +2,7 @@ import React from "react"
 import {BrowserRouter as Router,Routes, Route} from 'react-router-dom'
 //Yes, the sequence of components in the import statement does matter.
 import {ToastContainer} from 'react-toastify'
-
+import 'react-toastify/dist/ReactToastify.css'
 
 
 import Header from "./components/Header"
